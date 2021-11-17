@@ -13,6 +13,7 @@
 		A677295127455FAF00400D71 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A677295027455FAF00400D71 /* Preview Assets.xcassets */; };
 		A677295327455FAF00400D71 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A677295227455FAF00400D71 /* Persistence.swift */; };
 		A677295627455FAF00400D71 /* CoreDataNavigationLinkPopping.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A677295427455FAF00400D71 /* CoreDataNavigationLinkPopping.xcdatamodeld */; };
+		A677295D2745624300400D71 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = A677295C2745624300400D71 /* Models.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		A677295027455FAF00400D71 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A677295227455FAF00400D71 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		A677295527455FAF00400D71 /* CoreDataNavigationLinkPopping.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataNavigationLinkPopping.xcdatamodel; sourceTree = "<group>"; };
+		A677295C2745624300400D71 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 			children = (
 				A677294927455FAE00400D71 /* CoreDataNavigationLinkPoppingApp.swift */,
 				A677294B27455FAE00400D71 /* ContentView.swift */,
+				A677295C2745624300400D71 /* Models.swift */,
 				A677294D27455FAF00400D71 /* Assets.xcassets */,
 				A677295227455FAF00400D71 /* Persistence.swift */,
 				A677295427455FAF00400D71 /* CoreDataNavigationLinkPopping.xcdatamodeld */,
@@ -147,6 +150,7 @@
 				A677295327455FAF00400D71 /* Persistence.swift in Sources */,
 				A677294C27455FAE00400D71 /* ContentView.swift in Sources */,
 				A677294A27455FAE00400D71 /* CoreDataNavigationLinkPoppingApp.swift in Sources */,
+				A677295D2745624300400D71 /* Models.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

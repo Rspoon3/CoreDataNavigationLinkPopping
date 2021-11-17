@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
-        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="21A559" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Galaxy" representedClassName="Galaxy" syncable="YES">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="planets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Planet" inverseName="galaxy" inverseEntity="Planet"/>
+        <relationship name="solarSystems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SolarSystem" inverseName="galaxy" inverseEntity="SolarSystem"/>
+    </entity>
+    <entity name="Planet" representedClassName="Planet" syncable="YES">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="galaxy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Galaxy" inverseName="planets" inverseEntity="Galaxy"/>
+        <relationship name="solarSystem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SolarSystem" inverseName="planets" inverseEntity="SolarSystem"/>
+    </entity>
+    <entity name="SolarSystem" representedClassName="SolarSystem" syncable="YES">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="galaxy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Galaxy" inverseName="solarSystems" inverseEntity="Galaxy"/>
+        <relationship name="planets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Planet" inverseName="solarSystem" inverseEntity="Planet"/>
     </entity>
     <elements>
-        <element name="Item" positionX="-63" positionY="-18" width="128" height="44"/>
+        <element name="Galaxy" positionX="-167.0853271484375" positionY="-166.6473846435547" width="128" height="103"/>
+        <element name="SolarSystem" positionX="-54" positionY="9" width="128" height="89"/>
+        <element name="Planet" positionX="-76.18218994140625" positionY="215.4342651367188" width="128" height="103"/>
     </elements>
 </model>

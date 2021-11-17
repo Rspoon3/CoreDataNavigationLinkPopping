@@ -9,80 +9,113 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
-
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.createdAt, order: .forward)])
+    private var galaxies: FetchedResults<Galaxy>
+    
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                    } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
+        NavigationView{
+            List(galaxies){ galaxy in
+                NavigationLink {
+                    GalaxyDetails(galaxy: galaxy)
+                } label: {
+                    Text(galaxy.title)
                 }
             }
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            .navigationTitle("Galaxies")
+            .disabled(galaxies.isEmpty)
+            .overlay(Text("No Galaxies").opacity(galaxies.isEmpty ? 1 : 0))
+            .onAppear {
+                PersistenceController.shared.loadDummyDataIfNeeded()
             }
         }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
+        .navigationViewStyle(.stack)
     }
 }
 
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+struct GalaxyDetails: View{
+    @FetchRequest var solarSystems : FetchedResults<SolarSystem>
+    let galaxy: Galaxy
+    
+    init(galaxy: Galaxy){
+        self.galaxy = galaxy
+        
+        let request = SolarSystem.fetchRequest() as! NSFetchRequest<SolarSystem>
+        let predicate = NSPredicate(format: "galaxy == %@", galaxy)
+        request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
+        request.predicate = predicate
+        _solarSystems = FetchRequest(fetchRequest: request)
+    }
+    
+    var body: some View{
+        List{
+            Section("Solar Systems"){
+                ForEach(solarSystems){ solarSystem in
+                    NavigationLink {
+                        SolarSystemDetails(solarSystem: solarSystem)
+                    } label: {
+                        Text(solarSystem.title)
+                    }
+                }
+            }
+        }
+        .disabled(solarSystems.isEmpty)
+        .overlay(Text("No Solar Systems").opacity(solarSystems.isEmpty ? 1 : 0))
+        .navigationTitle(galaxy.title)
+    }
+}
+
+
+
+
+struct SolarSystemDetails: View{
+    @Environment(\.managedObjectContext) private var moc
+    @FetchRequest var planets : FetchedResults<Planet>
+    let solarSystem: SolarSystem
+    
+    init(solarSystem: SolarSystem){
+        self.solarSystem = solarSystem
+        
+        let request = Planet.fetchRequest() as! NSFetchRequest<Planet>
+        let predicate = NSPredicate(format: "solarSystem == %@", solarSystem)
+        request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
+        request.predicate = predicate
+        _planets = FetchRequest(fetchRequest: request)
+    }
+    
+    var body: some View{
+        List{
+            Section("Planets"){
+                ForEach(planets){ planet in
+                    Button(planet.title){
+                        planet.title = UUID().uuidString
+                        try! moc.save()
+                    }
+                    .lineLimit(1)
+                    .swipeActions {
+                        Button("Delete", role: .destructive){
+                            moc.delete(planet)
+                            try! moc.save()
+                        }
+                    }
+                }
+            }
+        }
+        .disabled(planets.isEmpty)
+        .overlay(Text("No planets").opacity(planets.isEmpty ? 1 : 0))
+        .navigationTitle(solarSystem.title)
+        .toolbar{
+            ToolbarItem{
+                Button("Add Planet"){
+                    let planet = Planet(context: moc)
+                    planet.createdAt = .now
+                    planet.title = UUID().uuidString
+                    planet.solarSystem = solarSystem
+                    planet.galaxy = solarSystem.galaxy
+                    
+                    try! moc.save()
+                }
+            }
+        }
     }
 }

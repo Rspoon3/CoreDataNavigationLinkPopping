@@ -10,24 +10,6 @@ import CoreData
 struct PersistenceController {
     static let shared = PersistenceController()
 
-    static var preview: PersistenceController = {
-        let result = PersistenceController(inMemory: true)
-        let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-        }
-        do {
-            try viewContext.save()
-        } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
-        return result
-    }()
-
     let container: NSPersistentContainer
 
     init(inMemory: Bool = false) {
@@ -51,5 +33,51 @@ struct PersistenceController {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+    }
+    
+    func loadDummyDataIfNeeded(){
+        let context = container.viewContext
+        let request = Galaxy.fetchRequest() as! NSFetchRequest<Galaxy>
+        let galaxyCount = try! context.count(for: request)
+
+        guard galaxyCount == 0 else{
+            return
+        }
+        
+        
+        let milkyWay = Galaxy(context: context)
+        milkyWay.createdAt = .now
+        milkyWay.title = "Milky Way"
+        
+        let andromeda = Galaxy(context: context)
+        andromeda.createdAt = .now
+        andromeda.title = "Andromeda"
+        
+        let messier81 = Galaxy(context: context)
+        messier81.createdAt = .now
+        messier81.title = "Messier 81"
+
+        let homeSystem = SolarSystem(context: context)
+        homeSystem.createdAt = .now
+        homeSystem.title = "Home"
+        homeSystem.galaxy = milkyWay
+        
+        let alphaCentauriSystem = SolarSystem(context: context)
+        alphaCentauriSystem.createdAt = .now
+        alphaCentauriSystem.title = "Alpha Centauri System"
+        alphaCentauriSystem.galaxy = milkyWay
+
+
+        let planetsNames = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"]
+
+        for name in planetsNames {
+            let planet = Planet(context: context)
+            planet.createdAt = .now
+            planet.title = name
+            planet.solarSystem = homeSystem
+            planet.galaxy = milkyWay
+        }
+        
+        try! context.save()
     }
 }
