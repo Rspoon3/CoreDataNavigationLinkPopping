@@ -3,13 +3,11 @@
     <entity name="Galaxy" representedClassName="Galaxy" syncable="YES">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="planets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Planet" inverseName="galaxy" inverseEntity="Planet"/>
         <relationship name="solarSystems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SolarSystem" inverseName="galaxy" inverseEntity="SolarSystem"/>
     </entity>
     <entity name="Planet" representedClassName="Planet" syncable="YES">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="galaxy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Galaxy" inverseName="planets" inverseEntity="Galaxy"/>
         <relationship name="solarSystem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SolarSystem" inverseName="planets" inverseEntity="SolarSystem"/>
     </entity>
     <entity name="SolarSystem" representedClassName="SolarSystem" syncable="YES">
@@ -19,8 +17,8 @@
         <relationship name="planets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Planet" inverseName="solarSystem" inverseEntity="Planet"/>
     </entity>
     <elements>
-        <element name="Galaxy" positionX="-167.0853271484375" positionY="-166.6473846435547" width="128" height="103"/>
+        <element name="Galaxy" positionX="-167.0853271484375" positionY="-166.6473846435547" width="128" height="74"/>
+        <element name="Planet" positionX="-76.18218994140625" positionY="215.4342651367188" width="128" height="74"/>
         <element name="SolarSystem" positionX="-54" positionY="9" width="128" height="89"/>
-        <element name="Planet" positionX="-76.18218994140625" positionY="215.4342651367188" width="128" height="103"/>
     </elements>
 </model>

@@ -75,7 +75,6 @@ struct PersistenceController {
             planet.createdAt = .now
             planet.title = name
             planet.solarSystem = homeSystem
-            planet.galaxy = milkyWay
         }
         
         try! context.save()

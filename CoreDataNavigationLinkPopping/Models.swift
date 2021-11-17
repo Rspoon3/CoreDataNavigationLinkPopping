@@ -14,7 +14,6 @@ public class Galaxy : NSManagedObject, Identifiable {
     @NSManaged public var title        : String
     @NSManaged public var createdAt    : Date
     @NSManaged public var solarSystems : Set<SolarSystem>
-    @NSManaged public var planets      : Set<Planet>
 }
 
 @objc(SolarSystem)
@@ -30,6 +29,5 @@ public class Planet : NSManagedObject, Identifiable {
     @NSManaged public var title       : String
     @NSManaged public var createdAt   : Date
     @NSManaged public var solarSystem : SolarSystem
-    @NSManaged public var galaxy      : Galaxy
 }
 

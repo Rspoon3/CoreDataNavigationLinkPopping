@@ -111,7 +111,6 @@ struct SolarSystemDetails: View{
                     planet.createdAt = .now
                     planet.title = UUID().uuidString
                     planet.solarSystem = solarSystem
-                    planet.galaxy = solarSystem.galaxy
                     
                     try! moc.save()
                 }
